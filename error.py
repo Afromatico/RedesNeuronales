@@ -32,7 +32,7 @@ class errorDefinitions:
         summ = 0
         for elm in range(len(expected)):
             for var in range(len(expected[elm])):
-                if abs(real[elm] - expected[elm]) < self.diff:
+                if abs(real[elm][var] - expected[elm][var]) < self.diff:
                     summ += 1
 
         return summ * 100 / len(real)

@@ -51,8 +51,10 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
         return output*(1-output)
 
     def update_weight(self, input):
-        for experiment in input:
+        for i in range(len(input)):
             for j in range(len(self.m)):
-                self.m[j] = self.m[j] + self.lr*self.delta[j]*experiment[j]
-                self.b = self.b + (self.lr*self.delta[j])
-        return [_ for _ in self.result]
+                self.m[j] = self.m[j] + self.lr*self.delta[i]*input[i][j]
+            self.b = self.b + (self.lr*self.delta[i])
+        ret = [_ for _ in self.result]
+        self.result = np.zeros(len(self.result))
+        return ret

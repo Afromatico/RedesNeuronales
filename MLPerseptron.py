@@ -35,7 +35,8 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
                 raw_input = []
                 for per in array:
                     raw_input.append(per.update_weight(input))
-                input = raw_input
+                [[raw_input[l][k] for l in range(len(raw_input))] for k in range(len(raw_input[0]))]
+                input = [[raw_input[l][k] for l in range(len(raw_input))] for k in range(len(raw_input[0]))]
 
 
     def initVariables(self, size, n_elements_data_set):
@@ -55,7 +56,7 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
             resultado_capa_anterior = resultado_capa_actual
             resultado_capa_actual = []
 
-        return [self.activationFuntion(ele) for ele in resultado_capa_anterior]
+        return [ele for ele in resultado_capa_anterior]
 
     def predict(self, x):
         values = np.zeros((len(x), self.out))

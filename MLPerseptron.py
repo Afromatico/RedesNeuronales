@@ -16,11 +16,13 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
     def activationFuntion(self, value):
         return 1 / (1 + np.exp(-value))
 
-    def train(self, ntrains, x, y):
+    def train(self, ntrains, x, y, weights=None, bias=None):
 
-        self.initVariables(len(x[0]), len(x))
+        self.initVariables(len(x[0]), len(x), weights=weights, bias=bias)
 
         self.results = np.zeros((ntrains, len(y), self.out))
+
+        print("Se inicializaron las variables")
 
         for train in range(ntrains):
 
@@ -29,7 +31,15 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
                 for ele in self.fit(x[i], i=i):
                     self.results[train][i][j] = ele
                     j += 1
+                    print("j")
+                print("i")
+
+            print("se calcularon los resultados preliminares")
+
             self.cal_error(y)
+
+            print("Se calculo el error respectivo alos resustados antetiores")
+
             input = x
             for array in self.capas:
                 raw_input = []
@@ -38,14 +48,16 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
                 [[raw_input[l][k] for l in range(len(raw_input))] for k in range(len(raw_input[0]))]
                 input = [[raw_input[l][k] for l in range(len(raw_input))] for k in range(len(raw_input[0]))]
 
+            print("Se propago error anterior")
 
-    def initVariables(self, size, n_elements_data_set):
+            print( "Se ha entrenado: " + str(train)+ "veces")
+
+
+    def initVariables(self, size, n_elements_data_set, weights=None, bias=None):
         self.IO[0] = size
-        i = 0
-        for array in self.capas:
-            for per in array:
-                per.initVariables(int(self.IO[i]), n_elements_data_set)
-            i += 1
+        for i in range(len(self.capas)):
+            for j in range(len(self.capas[i])):
+                self.capas[i][j].initVariables(int(self.IO[i]), n_elements_data_set, weights=weights[i][j], bias=bias[i][j])
 
     def fit(self, x, i=0):
         resultado_capa_anterior = [x[ele] for ele in range(len(x))]

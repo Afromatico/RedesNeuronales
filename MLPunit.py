@@ -8,8 +8,8 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
         self.result = []
         self.error = []
 
-    def initVariables(self, size, n_elements_dataset):
-        super(MLPPerseptronUnit,self).initVariables(size,n_elements_dataset)
+    def initVariables(self, size, n_elements_dataset, weights=None, bias=None):
+        super(MLPPerseptronUnit,self).initVariables(size,n_elements_dataset, weights=weights, bias=bias)
 
         self.result = np.zeros(n_elements_dataset)
         self.error = np.zeros(n_elements_dataset)
@@ -18,6 +18,8 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
 
 
     def activationFuntion(self, value):
+        if -value > np.log(np.finfo(type(value)).max):
+            return 0.0
         return 1/(1+np.exp(-value))
 
     def train(self, ntrains, x, y):

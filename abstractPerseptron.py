@@ -23,11 +23,17 @@ class AbstractPerseptron(object):
                     self.m[j] = self.m[j] + (self.lr * x[i][j] * (y[i] - self.results[train][i]))
                 self.b = self.b + (self.lr * (y[i] - self.results[train][i]))
 
-    def initVariables(self, size, n_elements_dataset):
-        self.b = rand.random() * 4.0 - 2.0
-        self.m = np.zeros(size)
-        for j in range(size):
-            self.m[j] = rand.random() * 4.0 - 2.0
+    def initVariables(self, size, n_elements_dataset, weights=None, bias=None):
+        if bias is not None:
+            self.b = bias
+        else:
+            self.b = rand.random() * 4.0 - 2.0
+        if weights is not None:
+            self.m = weights
+        else:
+            self.m = np.zeros(size)
+            for j in range(size):
+                self.m[j] = rand.random() * 4.0 - 2.0
 
     def fit(self, x, i=0):
         value = 0

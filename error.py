@@ -16,7 +16,7 @@ class errorDefinitions:
             for var in range(len(expected[elm])):
                 summ += pow(real[elm][var] - expected[elm][var], 2)
 
-        return summ / len(real)
+        return summ / (len(real)*len(real[0]))
 
     def error(self, expected, real):
 
@@ -25,7 +25,7 @@ class errorDefinitions:
             for var in range(len(expected[elm])):
                 summ += abs(real[elm] - expected[elm])
 
-        return summ / len(real)
+        return summ / (len(real)*len(real[0]))
 
     def presicion(self, expected, real):
 
@@ -35,4 +35,4 @@ class errorDefinitions:
                 if abs(real[elm][var] - expected[elm][var]) < self.diff:
                     summ += 1
 
-        return summ * 100 / len(real)
+        return summ * 100 / (len(real)*len(real[0]))

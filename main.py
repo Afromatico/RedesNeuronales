@@ -3,8 +3,19 @@ from MLPerseptron import MLPerseptron
 import matplotlib.pyplot as plt
 import error
 
+#
+# from mnist import MNIST
+#
+# mndata = MNIST('samples')
+#
+# images, labels = mndata.load_training()
+# # or
+# images_test, labels_test = mndata.load_testing()
 
-per = MLPerseptron(0.5,[2, 1])
+
+
+
+per = MLPerseptron(0.5,[1, 1])
 xAnd = [[1, 1], [1, 0], [0, 1], [0, 0]]
 yAnd = [[1], [0], [0], [0]]
 
@@ -20,18 +31,29 @@ for elem in xrand:
         yvals[i] = [1]
     i+=1
 
-exper = 3000
-per.train(exper, xrand, yvals)
-predict = per.predict(xrand)
+per.train(1, [[1, 1]], [[1]], weights=[[[0.4, 0.3]], [[0.3]]], bias=[[0.5], [0.4]])
 
-plotValues = np.zeros(len(per.results))
-err = error.errorDefinitions()
+print(per.results)
 
-for element in range(len(per.results)):
-    plotValues[element] = err.presicion(yvals,per.results[element])
+# exper = 200
+# per.train(exper, images, labels)
+# predict = per.predict(images_test)
+#
+#
+# #plotValues = np.zeros(len(per.results))
+# err = error.errorDefinitions()
+#
+# print(err.ECM(labels_test, predict))
+# print(err.presicion(labels_test, predict))
+# print(err.error(labels_test, predict))
+#
 
-plt.plot(range(0,exper),plotValues,0,1)
+#for element in range(len(per.results)):
+#    plotValues[element] = err.ECM(yvals,per.results[element])
 
-plt.show()
+#plt.plot(range(0,exper),plotValues)
 
-print(plotValues[len(plotValues)-1])
+#plt.show()
+
+#print(plotValues[len(plotValues)-1])
+

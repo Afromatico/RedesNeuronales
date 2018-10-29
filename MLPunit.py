@@ -11,10 +11,9 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
     def initVariables(self, size, n_elements_dataset, weights=None, bias=None):
         super(MLPPerseptronUnit,self).initVariables(size,n_elements_dataset, weights=weights, bias=bias)
 
-        self.result = np.zeros(n_elements_dataset)
-        self.error = np.zeros(n_elements_dataset)
-        self.delta = np.zeros(n_elements_dataset)
-
+        self.result = [0 for _ in range(n_elements_dataset)]
+        self.error = [0 for _ in range(n_elements_dataset)]
+        self.delta = [0 for _ in range(n_elements_dataset)]
 
 
     def activationFuntion(self, value):
@@ -26,11 +25,7 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
         pass
 
     def fit(self, x, i=0):
-        value = 0
-        for j in range(len(x)):
-            value = value + x[j] * self.m[j]
-        value = value + self.b
-        self.result[i] = self.activationFuntion(value)
+        self.result[i] = self.activationFuntion(sum(x[j]*self.m[j] for j in range(len(x))) + self.b)
         return self.result[i]
 
     def lastResult(self):
@@ -41,12 +36,9 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
             if first:
                 self.error[var] = expected[var] - self.result[var]
             else:
-                summ = 0
-                for per in range(len(delta)):
-                    summ += delta[per][var] * m[per]
-                self.error[var] = summ
+                self.error[var] = sum(delta[per][var]*m[per] for per in range(len(delta)))
             self.delta[var] = self.error[var]*self.transfer_derivative_output(self.result[var])
-        return [[elm for elm in self.delta], [elm for elm in self.m]]
+        return [self.delta, self.m]
 
 
     def transfer_derivative_output(self, output):
@@ -57,6 +49,12 @@ class MLPPerseptronUnit(abstractPerseptron.AbstractPerseptron):
             for j in range(len(self.m)):
                 self.m[j] = self.m[j] + self.lr*self.delta[i]*input[i][j]
             self.b = self.b + (self.lr*self.delta[i])
-        ret = [_ for _ in self.result]
-        self.result = np.zeros(len(self.result))
+        ret = self.result
+        self.clean_memory()
+
         return ret
+
+    def clean_memory(self):
+        self.result = [0 for _ in range(len(self.result))]
+        self.error = [0 for _ in range(len(self.error))]
+        self.delta = [0 for _ in range(len(self.delta))]

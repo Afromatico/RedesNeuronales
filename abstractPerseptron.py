@@ -1,5 +1,4 @@
 import random as rand
-import numpy as np
 
 
 class AbstractPerseptron(object):
@@ -13,7 +12,7 @@ class AbstractPerseptron(object):
 
         self.initVariables(len(x[0]),len(x))
 
-        self.results = np.zeros((ntrains,len(y)))
+        self.results = [[0 for _ in range(len(y))] for _ in range(ntrains)]
 
         for train in range(ntrains):
 
@@ -27,13 +26,13 @@ class AbstractPerseptron(object):
         if bias is not None:
             self.b = bias
         else:
-            self.b = rand.random() * 4.0 - 2.0
+            self.b = self.take_random()
         if weights is not None:
             self.m = weights
         else:
-            self.m = np.zeros(size)
+            self.m = [0 for _ in range(size)]
             for j in range(size):
-                self.m[j] = rand.random() * 4.0 - 2.0
+                self.m[j] = self.take_random()
 
     def fit(self, x, i=0):
         value = 0
@@ -43,7 +42,7 @@ class AbstractPerseptron(object):
         return self.activationFuntion(value)
 
     def predict(self, x):
-        values = np.zeros(len(x))
+        values = [0 for _ in range(len(x))]
         for i in range(len(x)):
             values[i] = self.fit(x[i])
         return values
@@ -53,3 +52,11 @@ class AbstractPerseptron(object):
 
     def results(self):
         return self.results
+
+    def take_random(self):
+        value = rand.random() * 3.0 - 2.0
+        if value > 0:
+            value += 0.5
+        else:
+            value -= 0.5
+        return value

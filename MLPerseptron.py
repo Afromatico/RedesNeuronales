@@ -4,10 +4,11 @@ import MLPunit
 
 
 class MLPerseptron(abstractPerseptron.AbstractPerseptron):
-    def __init__(self, lr, capas):
+    def __init__(self, lr, capas, max_elements_per_epoch=20):
         abstractPerseptron.AbstractPerseptron.__init__(self, lr)
         self.capas = [[MLPunit.MLPPerseptronUnit(lr) for _ in range(capas[val])] for val in range(len(capas))]
         self.IO = [0 for _ in range(len(capas))]
+        self.element_per_epoch = max_elements_per_epoch
         for i in range(len(capas) - 1):
             self.IO[i + 1] = capas[i]
 
@@ -18,13 +19,16 @@ class MLPerseptron(abstractPerseptron.AbstractPerseptron):
 
     def train(self, ntrains, x, y, weights=None, bias=None):
 
+        if len(y) < self.element_per_epoch:
+            self.element_per_epoch = len(y)
+
         self.initVariables(len(x[0]), len(x), weights=weights, bias=bias)
 
         self.results = [[[0 for _ in range(self.out)] for _ in range(len(y))] for _ in range(ntrains)]
 
-        for train in range(ntrains):
+        for epoch in range(ntrains):
 
-            self.results[train] = [[ele for ele in self.fit(x[i], i=i)] for i in range(len(y))]
+            self.results[epoch] = [[ele for ele in self.fit(x[i], i=i)] for i in range(len(y))]
 
             self.cal_error(y)
 

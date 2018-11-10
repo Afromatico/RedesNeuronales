@@ -18,7 +18,7 @@ X_test = [[_ for _ in val] for val in X_test.values]
 y_train = [[_ for _ in val] for val in y_train.values]
 y_test = [[_ for _ in val] for val in y_test.values]
 
-per = MLPerseptron(0.01,[4, 7, 5, 3])
+per = MLPerseptron(0.01,[4, 7, 3])
 # xAnd = [[1, 1], [1, 0], [0, 1], [0, 0]]
 # yAnd = [[1], [0], [0], [0]]
 #
@@ -59,6 +59,21 @@ for element in range(len(per.results)):
 plt.plot(range(0,exper),plotValues)
 
 plt.show()
+
+for element in range(len(per.results)):
+   plotValues[element] = err.ECM(y_train, per.results[element])
+
+plt.plot(range(0,exper),plotValues)
+
+plt.show()
+
+for element in range(len(per.results)):
+   plotValues[element] = err.error(y_train, per.results[element])
+
+plt.plot(range(0,exper),plotValues)
+
+plt.show()
+
 
 print(err.presicion(y_test,predict))
 

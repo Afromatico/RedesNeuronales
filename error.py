@@ -23,7 +23,7 @@ class errorDefinitions:
         summ = 0
         for elm in range(len(expected)):
             for var in range(len(expected[elm])):
-                summ += abs(real[elm] - expected[elm])
+                summ += abs(real[elm][var] - expected[elm][var])
 
         return summ / (len(real)*len(real[0]))
 

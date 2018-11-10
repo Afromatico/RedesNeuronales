@@ -9,11 +9,16 @@ import pandas as pd
 data = pd.read_csv("samples/iris.csv")
 
 data_x = data.ix[:,[0,1,2,3]]
-data_y = data.ix[:,4]
+data_y = data.ix[:,[4,5,6]]
 
 X_train, X_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.3)
 
-per = MLPerseptron(0.1,[4, 7, 1])
+X_train = [[_ for _ in val] for val in X_train.values]
+X_test = [[_ for _ in val] for val in X_test.values]
+y_train = [[_ for _ in val] for val in y_train.values]
+y_test = [[_ for _ in val] for val in y_test.values]
+
+per = MLPerseptron(0.01,[4, 7, 5, 3])
 # xAnd = [[1, 1], [1, 0], [0, 1], [0, 0]]
 # yAnd = [[1], [0], [0], [0]]
 #
@@ -35,9 +40,9 @@ per = MLPerseptron(0.1,[4, 7, 1])
 #
 # X_train, X_test, y_train, y_test = train_test_split(xrand, yvals, test_size=0.3)
 
-exper = 100
-per.train(exper, X_train.values, [y_train.values])
-predict = per.predict(X_test.values)
+exper = 1000
+per.train(exper, X_train, y_train)
+predict = per.predict(X_test)
 #
 #
 plotValues = np.zeros(len(per.results))
@@ -49,11 +54,11 @@ err = error.errorDefinitions()
 
 
 for element in range(len(per.results)):
-   plotValues[element] = err.presicion([y_train.values], per.results[element])
+   plotValues[element] = err.presicion(y_train, per.results[element])
 
 plt.plot(range(0,exper),plotValues)
 
 plt.show()
 
-print(err.presicion([y_test.values],predict))
+print(err.presicion(y_test,predict))
 

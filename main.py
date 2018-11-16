@@ -52,28 +52,37 @@ err = error.errorDefinitions()
 # print(err.presicion(labels_test, predict))
 # print(err.error(labels_test, predict))
 
+fig1 = plt.subplot()
 
 for element in range(len(per.results)):
    plotValues[element] = err.presicion(y_train, per.results[element])
 
 plt.plot(range(0,exper),plotValues)
+fig1.set_title('Precision')
 
 plt.show()
+
+fig1 = plt.subplot()
 
 for element in range(len(per.results)):
    plotValues[element] = err.ECM(y_train, per.results[element])
 
 plt.plot(range(0,exper),plotValues)
+fig1.set_title('Error Cuadratico Medio')
 
 plt.show()
+
+fig1 = plt.subplot()
 
 for element in range(len(per.results)):
    plotValues[element] = err.error(y_train, per.results[element])
 
 plt.plot(range(0,exper),plotValues)
+fig1.set_title('Error')
 
 plt.show()
 
-
-print(err.presicion(y_test,predict))
+print('precision: ', err.presicion(y_test,predict))
+print('error cuadratico medio: ',err.ECM(y_test,predict))
+print('error: ',err.error(y_test,predict))
 
